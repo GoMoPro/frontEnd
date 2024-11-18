@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:untitled/screen/calendar_screen.dart';
-import 'package:untitled/screen/home_screen.dart';
 import 'firebase_options.dart'; // Firebase 설정 파일을 불러옵니다.
 import 'screen/login_screen.dart'; // 로그인 화면을 불러옵니다.
 import 'package:intl/date_symbol_data_local.dart'; // locale 정보를 불러옴.
