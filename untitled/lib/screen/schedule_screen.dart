@@ -87,6 +87,6 @@ class ScheduleCard extends StatelessWidget{
           )
         )
       ),
-    )
+    );
   }
 }
