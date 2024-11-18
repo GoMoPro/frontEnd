@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/screen/calendar_screen.dart';
 import 'package:untitled/screen/schedule_screen.dart';
+import 'package:untitled/screen/add_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -31,6 +32,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ScheduleCard(startTime: 12, endTime: 14, content: "고모프")
             ],
           )
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF1976D2),
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddScreen())
+          );
+        },
       ),
     );
   }
