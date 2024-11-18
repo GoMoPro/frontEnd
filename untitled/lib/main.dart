@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF1976D2), // 앱의 기본 색상을 파란색으로 설정
       ),
-      home: const HomeScreen(), // 앱 시작 시 로그인 화면을 표시
+      home: const LoginScreen(), // 앱 시작 시 로그인 화면을 표시
     );
   }
 }
