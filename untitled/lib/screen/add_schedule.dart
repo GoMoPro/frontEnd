@@ -522,29 +522,3 @@ class FirestoreService {
     }
   }
 }
-
-
-/*
-1. Firebase Firestore와의 상호작용을 위해 먼저 FirebaseFirestore 인스턴스를 생성합니다.
-   `final FirebaseFirestore _firestore = FirebaseFirestore.instance;`
-
-2. saveSchedule 함수는 비동기 방식으로 작성되어, 일정 데이터를 저장하기 위해 `Future<void>` 형식을 반환합니다.
-   즉, 이 함수는 Firestore에 데이터가 저장되길 기다려야 하며, 비동기로 처리되어 나머지 앱 흐름을 방해하지 않습니다.
-
-3. Firestore 데이터베이스의 "schedules"라는 컬렉션에 새로운 문서를 추가합니다.
-   `await _firestore.collection('schedules').add(scheduleData);`
-   - `collection('schedules')`: Firestore의 "schedules" 컬렉션에 접근합니다. 이 컬렉션이 이미 존재하지 않으면 Firestore에서 자동으로 생성됩니다.
-   - `add(scheduleData)`: 전달된 scheduleData를 Firestore에 새 문서로 추가합니다.
-     - `scheduleData`는 일정 데이터를 포함하는 Map 형태이며, 이 데이터는 다음과 같은 필드를 포함합니다:
-       - 'date': 일정 날짜 (형식: "yyyy-MM-dd", 예: "2024-12-04")
-       - 'startTime': 일정 시작 시간 (형식: "오전 8:30" 또는 "오후 2:30" 등, 로컬 형식으로 표시)
-       - 'endTime': 일정 종료 시간 (형식: "오후 6:00" 등)
-       - 'content': 일정 제목 (예: "프로젝트 회의")
-       - 'memo': 메모 내용 (예: "회의 준비 자료 필요")
-       - 'isAlarmEnabled': 알람 설정 여부 (Boolean 값, 예: true/false)
-       - 'color': 일정의 색상 코드 (정수 값, 예: Colors.blue.value)
-       - 'isDailyRoutineEnabled': 하루 종일 설정 여부 (Boolean 값)
-
-4. 데이터가 정상적으로 Firestore에 저장되면 "데이터 저장 성공!"이라는 메시지가 출력되고, 오류가 발생할 경우 catch 블록에서 해당 오류 메시지를 출력합니다.
-   `print("데이터 저장 실패: $e");`
-*/
