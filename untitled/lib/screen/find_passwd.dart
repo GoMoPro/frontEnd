@@ -58,6 +58,10 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Image.asset(
+                  'assets/whale.png',
+                  height: 150,
+                ),
                 const SizedBox(height: 20),
                 if (!_isEmailSent) ...[
                   const Text(
@@ -69,7 +73,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      hintText: "example@gmail.com",
+                      labelText: "Email",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -99,10 +103,6 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                     'Password reset email has been sent.\nPlease check your inbox.',
                     style: TextStyle(fontSize: 16, color: Colors.green),
                     textAlign: TextAlign.center,
-                  ),
-                  Image.asset(
-                    'assets/check.png',
-                    height: 150,
                   ),
                 ],
                 const SizedBox(height: 20),

@@ -64,4 +64,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/whale.png
-    - assets/check.png
