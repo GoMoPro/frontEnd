@@ -28,25 +28,25 @@ class _AddScheduleState extends State<AddSchedule> {
   late Color? selectedColor; // 선택된 색상
   late bool isDailyRoutineEnabled; // 하루 종일 여부
 
-
   @override
   void initState() {
     super.initState();
 
+    // 기존 일정이 있다면 초기 데이터를 설정하고, 없다면 기본값 설정
     if (widget.existingSchedule != null) {
-      final schedule = widget.existingSchedule!;
-      scheduleTitle = schedule['content'] ?? '';
-      morningTime = schedule['startTime'] is String
-          ? FirestoreService().parseTime(schedule['startTime'])
-          : schedule['startTime'] ?? TimeOfDay(hour: 6, minute: 0);
-      afternoonTime = schedule['endTime'] is String
-          ? FirestoreService().parseTime(schedule['endTime'])
-          : schedule['endTime'] ?? TimeOfDay(hour: 18, minute: 0);
-      isAlarmEnabled = schedule['isAlarmEnabled'] ?? false;
-      memo = schedule['memo'] ?? '';
-      selectedColor = schedule['color'] != null ? Color(schedule['color']) : Colors.blue;
-      isDailyRoutineEnabled = schedule['isDailyRoutineEnabled'] ?? false;
+      final schedule = widget.existingSchedule!; // 기존 일정 데이터 가져오기
+      print("초기화되는 값들: $schedule"); // 디버깅을 위한 로그 출력
+
+      // 기존 일정 정보를 가져와 각 필드에 초기화
+      scheduleTitle = schedule['content'] ?? ''; // 일정 제목
+      morningTime = schedule['startTime'] ?? TimeOfDay(hour: 6, minute: 00); // 시작 시간
+      afternoonTime = schedule['endTime'] ?? TimeOfDay(hour: 18, minute: 00); // 종료 시간
+      isAlarmEnabled = schedule['isAlarmEnabled'] ?? false; // 알람 설정 여부
+      memo = schedule['memo'] ?? ''; // 메모 내용
+      selectedColor = schedule['color']; // 선택된 색상
+      isDailyRoutineEnabled = schedule['isDailyRoutineEnabled'] ?? false; // 하루 종일 설정 여부
     } else {
+      // 기존 일정이 없는 경우 기본값 설정
       scheduleTitle = '';
       morningTime = TimeOfDay(hour: 8, minute: 30);
       afternoonTime = TimeOfDay(hour: 14, minute: 30);
@@ -441,21 +441,16 @@ class _RoutineSettingsScreenState extends State<RoutineSettingsScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('일정 제목을 입력해주세요.')));
                         } else {
-                          // Firestore 데이터 저장 예시
                           final updatedSchedule = {
-                            'date': DateFormat('yyyy-MM-dd').format(selectedDate.toLocal()),
-                            'startTime': '${morningTime.hour}:${morningTime.minute}',
-                            'endTime': '${afternoonTime.hour}:${afternoonTime.minute}',
+                            'date': DateFormat('yyyy-MM-dd').format(selectedDate.toLocal()), // 대한민국 시간대로 변경
+                            'startTime': morningTime.format(context),
+                            'endTime': afternoonTime.format(context),
                             'content': scheduleTitle,
                             'memo': memo,
                             'isAlarmEnabled': isAlarmEnabled,
                             'color': selectedColor?.value ?? Colors.blue.value,
                             'isDailyRoutineEnabled': isDailyRoutineEnabled,
                           };
-
-
-
-
 
                           await FirestoreService().saveSchedule(updatedSchedule);
 
@@ -513,47 +508,17 @@ class ColorOption extends StatelessWidget {
   }
 }
 
+// Firestore 데이터베이스 서비스 클래스
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // 일정 데이터 저장 메서드
+  // 일정 데이터 저장 함수
   Future<void> saveSchedule(Map<String, dynamic> scheduleData) async {
     try {
-      await _firestore.collection('schedules').add(scheduleData); // 일정 데이터를 Firestore에 저장
-      print("일정 저장 성공!");
+      await _firestore.collection('schedules').add(scheduleData);
+      print("데이터 저장 성공!");
     } catch (e) {
-      print("일정 저장 실패: $e");
-    }
-  }
-
-  // 일정 데이터를 실시간으로 가져오는 메서드
-  Stream<QuerySnapshot> getSchedulesStream() {
-    return _firestore.collection('schedules').snapshots();
-  }
-
-  // 일정 업데이트 메서드
-  Future<void> updateSchedule(String id, Map<String, dynamic> data) async {
-    try {
-      await _firestore.collection('schedules').doc(id).update(data);
-      print("일정 업데이트 성공!");
-    } catch (e) {
-      print("일정 업데이트 실패: $e");
-    }
-  }
-  TimeOfDay parseTime(String timeString) {
-    final parts = timeString.split(':');
-    final hour = int.parse(parts[0]);
-    final minute = int.parse(parts[1]);
-    return TimeOfDay(hour: hour, minute: minute);
-  }
-
-  // 일정 삭제 메서드
-  Future<void> deleteSchedule(String id) async {
-    try {
-      await _firestore.collection('schedules').doc(id).delete();
-      print("일정 삭제 성공!");
-    } catch (e) {
-      print("일정 삭제 실패: $e");
+      print("데이터 저장 실패: $e");
     }
   }
 }

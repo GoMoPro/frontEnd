@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class _Time extends StatelessWidget {
   final TimeOfDay startTime; // 시작 시간
@@ -161,79 +160,6 @@ class ScheduleCard extends StatelessWidget{
           )
         )
       ),
-    );
-  }
-}
-
-class ScheduleListScreen extends StatelessWidget {
-  const ScheduleListScreen({Key? key}) : super(key: key);
-
-  // Firestore에서 데이터를 읽어오는 Stream
-  Stream<List<Map<String, dynamic>>> _fetchSchedules() {
-    return FirebaseFirestore.instance.collection('schedules').snapshots().map(
-          (snapshot) {
-        return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Schedules'),
-      ),
-      body: StreamBuilder<List<Map<String, dynamic>>>(
-        stream: _fetchSchedules(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          final schedules = snapshot.data ?? [];
-
-          // 스케줄 카드 목록 표시
-          return ListView.builder(
-            itemCount: schedules.length,
-            itemBuilder: (context, index) {
-              final schedule = schedules[index];
-
-              return ScheduleCard(
-                startTime: _parseTimeOfDay(schedule['startTime']),
-                endTime: _parseTimeOfDay(schedule['endTime']),
-                content: schedule['content'],
-                memo: schedule['memo'],
-                color: Color(schedule['color']),
-                isAlarmEnabled: schedule['isAlarmEnabled'] ?? false,
-                onAlarmToggle: () {
-                  // 알람 상태 업데이트
-                  FirebaseFirestore.instance
-                      .collection('schedules')
-                      .doc(schedule['id']) // Firestore 문서 ID
-                      .update({
-                    'isAlarmEnabled': !(schedule['isAlarmEnabled'] ?? false),
-                  });
-                },
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  // Firestore에서 가져온 시간을 TimeOfDay로 변환하는 함수
-  TimeOfDay _parseTimeOfDay(String time) {
-    final parts = time.split(' ');
-    final timeParts = parts[0].split(':');
-    final hour = int.parse(timeParts[0]);
-    final minute = int.parse(timeParts[1]);
-    final isPM = parts[1].toUpperCase() == 'PM';
-    return TimeOfDay(
-      hour: isPM && hour != 12 ? hour + 12 : (hour == 12 && !isPM ? 0 : hour),
-      minute: minute,
     );
   }
 }
