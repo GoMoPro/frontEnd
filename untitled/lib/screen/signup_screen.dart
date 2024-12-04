@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 60), // 화면 상단과의 여백
+                const SizedBox(height: 20), // 화면 상단과의 여백
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 40), // 여백 추가
+                const SizedBox(height: 10), // 여백 추가
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 40), // 여백 추가
+                const SizedBox(height: 10), // 여백 추가
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
@@ -120,13 +120,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 const SizedBox(height: 10), // 여백 추가
-                const Text(
-                  "At least 7 characters including English letters and numbers",
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 112, 112, 112), fontSize: 10),
-                ),
-
-                const SizedBox(height: 30), // 여백 추가
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
@@ -145,7 +138,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 30), // 여백 추가
+                const SizedBox(height: 10), // 여백 추가
+                const Text(
+                  "At least 7 characters including English letters and numbers",
+                  style: TextStyle(color: Color.fromARGB(255, 112, 112, 112)),
+                ),
+                const SizedBox(height: 5), // 여백 추가
                 if (_isLoading)
                   const CircularProgressIndicator()
                 else
@@ -158,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                     },
                   ),
-                const SizedBox(height: 20), // 여백 추가
+                const SizedBox(height: 10), // 여백 추가
                 CustomButton(
                   text: "Go to Login",
                   color: const Color(0xFF1976D2),
@@ -169,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 40), // 여백 추가
+                const SizedBox(height: 20), // 여백 추가
                 const Text.rich(
                   TextSpan(
                     text: 'By clicking Sign up, you agree to our ',
